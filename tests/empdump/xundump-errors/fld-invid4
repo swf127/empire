@@ -1,0 +1,4 @@
+config nat
+cnum ...
+100
+# field 1 must be <= 98

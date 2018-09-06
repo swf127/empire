@@ -1,0 +1,17 @@
+#!/bin/sh -e
+# Basic files test
+
+if [ $# -ne 1 ]
+then echo "Usage: $0 SRCDIR" >&2; exit 1
+fi
+
+srcdir="$1"
+
+. "$srcdir"/tests/test-common.sh
+
+create_sandbox
+
+run_and_cmp files $files -f
+
+$empdump -x >sandbox/final.xdump
+cmp_out final.xdump

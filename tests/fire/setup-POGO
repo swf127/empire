@@ -1,0 +1,121 @@
+|| create land
+desi @0,0:2 +
+give c * ?des#. 100
+|| country#1
+add 1 1 1 p
+desi 1,-1 c
+edit c 1 c 1,-1 s 4 b 640 M 25000 T 100
+desi 3,1 h
+| one highway, four forts (4% 5% 100% 100%), all with mil, guns & shells
+desi -2:4,0 f
+edit l * ?des#. o 1 O 1
+give m -4:4,0 5
+give g -4:4,0 1
+give s -4:4,0 1
+edit l -2,0 e 4
+edit l 0,0 e 5
+give g 4,0 6
+give s 2:4,0 99
+|| country#2
+add 2 2 2 p
+edit c 2 s 4 b 640 M 25000 T 100
+| target harbor, highways
+desi 2,2 h
+edit l -2:4,2:3 ?des#. o 2 O 2
+give l * ?own=2 100
+give h * ?own=2 100
+edit l * ?own=2 a 100 R 100 r 100 d 100
+| 0,2 is at risk of getting shelled to deity
+| can upset the rest of the test when it happens, avoid by adding more civs
+give c 0,2 900
+|| country#3
+| just a sanctuary @ 2,-2
+add 3 3 3 p
+edit c 3 c 2,-2 b 640 M 25000
+desi 2,-2 s
+|| finishing touches to land
+edit l * ?des#.&eff=0 e 100
+edit l * ?des#.&des#h m 127
+| note: no mob in harbor to avoid unwanted supply
+|| relations
+decl w 1 2
+decl w 2 1
+|| mark target sectors
+terr * ?own#0&eff=100 2
+terr 14,0 1
+terr 2,-2 1
+terr -2,-2 1
+terr 2,2 1
+terr 0,2 1
+terr 6,0 1
+|| target ships
+| frg far away
+build s -12,0 frg
+edit s 0 O 2
+| sub at sea and in port
+edit s 0 U 10 t sb L 2,2 U 11 L 6,0
+edit s 10 U 12 m 5 E 100 M 127 U 13 L 6,0
+| cs at sea and in port
+edit s 0 U 20 t cs L 2,2 O 2 l 100 h 100 U 21 L 6,0
+edit s 20 U 22 m 5 E 100 M 127 U 23 L 6,0 U 24
+|| target lands
+| spy in target harbor
+build l 2,2 spy
+edit u 0 e 100 M 127
+| spy on target subs
+edit u 0 U 10 S 10 U 11 S 11 U 12 S 12 U 13 S 13
+| rad on target cs
+edit u 0 U 20 T rad m 10 S 20 U 21 S 21 U 22 S 22 U 23 S 23
+| tra in target harbor
+edit u 0 U 32 T tra L 2,2 m 10 l 100 h 100
+edit u 0 U 33 T rad m 10 Y 32
+|| target planes
+| sam & jhb in target harbor
+build p 2,2 sam
+edit p 0 e 100 m 127
+build p 2,2 jhb
+edit p 1 e 100 m 127
+| sam in target cs and rad
+edit p 0 U 20 s 20 U 21 s 21 U 22 s 22 U 23 s 23
+edit p 0 U 25 y 20 U 26 y 21 U 27 y 22 U 28 y 23
+edit p 0 U 32 y 32 U 33 y 33
+|| target nukes in target harbor and on target jhb
+build n 2,2 10kt
+edit n 0 U 1 p 1
+|| firing ships
+| bb range >=3, 59% 60% 100% 100%
+edit s 0 U 1 t bb T 150 L 3,1 O 1 E 59 M 127 m 13 g 10 s 100
+edit s 1 U 2 E 60 U 3 E 100 U 4
+| cs
+edit s 0 U 8 t cs L 3,1 O 1 E 100
+edit s 8 U 9 L 5,1 M 127 m 10 g 10 s 10
+| note: away from bb to avoid unwanted supply
+| dd range 1.5
+edit s 0 U 5 t dd T 100 L 8,0 O 1 E 100 M 127 m 5 g 4 s 40
+edit s 5 U 6 L 3,3
+| missions for fire to clear
+| (not all ships can perform missions)
+miss s * ?own=1 int .
+|| firing lands
+| hat range 3.5 39% 40% 100% 100% 100%
+edit u 0 U 1 T hat t 160 L 3,1 O 1 e 39 m 10 g 12 s 40
+edit u 1 U 2 e 40 U 3 e 100 U 4 U 5 L 0,-2
+| tra
+edit u 0 U 8 T tra L 3,1 O 1
+| sup
+edit u 0 U 9 T sup L 1,1 O 1 M 0 m 10 g 10 s 10
+| note: no mob in sup to avoid unwanted supply
+| missions for fire to clear
+| (not all land units can perform missions)
+miss l * ?own=1 int .
+|| show initial state here to help maintainers
+map *
+cens * ?own#0
+comm * ?own#0
+ship *
+carg *
+land *
+lcar *
+plan *
+nuke *
+sinf * ?own#0

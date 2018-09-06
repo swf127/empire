@@ -1,0 +1,4 @@
+config item
+uid ...
+1
+# expected 0 in field 1

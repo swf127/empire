@@ -1,0 +1,6 @@
+real 0 -8:16,-4:4
+cen *
+ship *
+map #
+read y
+prod *

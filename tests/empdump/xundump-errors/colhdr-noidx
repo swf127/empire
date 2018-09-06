@@ -1,0 +1,3 @@
+config ship-chr
+name(0)
+# header 'name' doesn't take an index in field 1

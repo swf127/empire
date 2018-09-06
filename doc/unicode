@@ -1,0 +1,161 @@
+Empire has been extended to optionally work with Unicode.  This file
+documents the design and implementation of this change.
+
+
+Traditional Empire Character Set
+--------------------------------
+
+Empire has always used plain ASCII.  It abused the most significant
+bit for highlighting.  Some commands cleared this bit from some input,
+others didn't.
+
+The restriction to the archaic ASCII character set bothered some
+players.  It is barely serviceable for most western languages other
+than English, and useless for everything else.  This is unbecoming for
+a game played around the world.
+
+
+What is Unicode?
+----------------
+
+Unicode is the emerging standard character set for all multi-lingual
+applications.  The core of Unicode is identical to the Universal
+Character Set (UCS) defined in ISO 10646.
+
+UCS is 31-bit.  The most commonly used characters are the range
+0-0xFFFD, the so called Basic Multilingual Plane (BMP).
+
+A character set can be encoded in different ways.  Popular encodings
+are UCS-4 (four byte wide characters), UCS-2 (two byte wide
+characters; can't represent characters outside the BMP directly), and
+UTF-8 (a multibyte encoding).
+
+UTF-8 has a few desirable properties.  In particular, it is a
+compatible extension of plain (7-bit) ASCII: every ASCII string is
+also a valid UTF-8 string, and a plain ASCII byte (an octet with the
+most significant bit clear) in an UTF-8 string always encodes the
+ASCII character, i.e. it is never part of a multibyte sequence.
+
+To learn more, see the Unicode FAQ, currently at
+<http://www.cl.cam.ac.uk/~mgk25/unicode.html>.
+
+
+Requirements for Unicode Support in Empire
+------------------------------------------
+
+* Full backward compatibility to existing clients
+
+* Easy to support for clients
+
+* Minimal impact on server code; no additional portability headaches
+
+* Interoperability between old and new clients and servers
+
+
+Principles of Design
+--------------------
+
+Client/server communications uses what we call external encoding:
+either traditional Empire ASCII (7-bit ASCII plus highlighting bit) or
+UTF-8.  The choice between the encoding is under the control of the
+client, and defaults to Empire ASCII.  The chosen encoding is a
+property of the session; it doesn't carry over the future sessions.
+Highlighting is only supported for output (from server to client).
+Highlighting in UTF-8 is done with control characters: ASCII SO (Shift
+Out, C-n, decimal 14) starts highlighting, and ASCII SI (Shift In,
+C-o, decimal 15) stops highlighting.  Text encoded in the client's
+external encoding is called user text.
+
+There are two internal encodings.  We use UTF-8 for player-player
+communication, and Empire ASCII for everything else.  Most of the
+time, there's no difference, because ASCII is valid UTF-8.  The
+exception is where the highlighting bit can be used.  We call such
+text normal text.
+
+Input from the client needs to be translated from the client's
+external encoding into internal encoding.  We call this input
+filtering.  Since highlighting is not supported on input, the result
+is always valid UTF-8.  Commands retrieve input that is player-player
+communication directly as UTF-8.  Other input is retrieved as ASCII,
+with non-ASCII characters replaced by '?'.
+
+Input filtering from UTF-8 drops ASCII control characters except
+'\t' and '\n'.
+
+Input filtering from ASCII additionally replaces non-ASCII characters
+by '?'.  The result is plain ASCII, which is also valid UTF-8.
+
+Output to the client needs to be translated from internal encoding to
+the client's external encoding.  We call this output filtering.  It is
+integrated into the printing functions, i.e. the functions for sending
+output to the client.  Most of them accept normal text.  Some accept
+UTF-8, and some only plain ASCII; all of these are clearly documented.
+
+Output filtering to ASCII doesn't change normal text.  In UTF-8 text,
+it replaces non-ASCII characters by '?'.
+
+Output filtering to UTF-8 doesn't change UTF-8 text.  In normal text,
+it strips highlighting bits and inserts SI/SO control characters in
+their place.
+
+
+Notes for Clients
+-----------------
+
+Clients use session option utf-8 during login to switch the session to
+UTF-8.  Highlighting is done differently in UTF-8 sessions.  Consult
+doc/clients-howto for details.
+
+An ASCII session should work just like previous server versions,
+except for the treatment of control and non-ASCII characters.  We
+believe the new behavior makes more sense.
+
+How to program your host to let you use Unicode in your client's user
+interface is platform dependent, and beyond the scope of this
+document.
+
+Wolfpack's empclient supports UTF-8 if it runs in a terminal that
+understands UTF-8.  See its manual page.
+
+
+Implementation Notes
+--------------------
+
+A session uses UTF-8 rather than Empire ASCII if PF_UTF8 is set in
+member flags of struct player.  Session option utf-8 manipulates this
+flag.
+
+Input and output filtering code is in src/lib/subs/pr.c.
+
+Almost all code is untouched, almost all strings are still normal
+text.  Use of the other encodings is commented (well, we tried!).
+
+The following commands and features have been changed to cope with
+Unicode:
+
+* telegram, announce, pray and turn
+
+  Get the text of the message as UTF-8.  Actually, the commands
+  themselves weren't affected, only the common code to get a
+  telex-like message, getele().
+
+* read, wire and the automatic display of MOTD and game-down messages
+
+  Display messages as UTF-8.  The changes were limited to common
+  message display code.  Its entry point was renamed from prnf() to
+  uprnf(), to make its unusual UTF-8 argument a bit more obvious.
+
+* flash and wall
+
+  Retrieve the text to send as UTF-8, and send it to the recipient(s)
+  with output filtering appropriate for their session applied.
+
+  The text to send can be given on the command line itself.  In this
+  case it has to be fetched from the raw command line buffer.  Since
+  that buffer is already UTF-8, no change was required.
+
+  The commands can also prompt for the text to send.  A new function
+  ugetstring() patterned after existing getstring() takes care of
+  that.
+
+  Output filtering is handled by pr_flash().

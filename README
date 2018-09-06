@@ -1,0 +1,101 @@
+Welcome to Empire 4, code-named Wolfpack.
+
+Empire is a multi-player, client/server Internet based war game.
+Copyright (C) 1986-2015, Dave Pare, Jeff Bailey, Thomas Ruschak,
+Ken Stevens, Steve McClure, Markus Armbruster
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License (in file
+`COPYING'), or (at your option) any later version.
+
+See file `CREDITS' for a list of contributors.
+
+Directory `doc' has additional information.  File `doc/README'
+describes the files there and what they talk about.
+
+To build the server and set up a game, follow the steps below.
+
+(1) Unpacking the source tree
+
+    If you downloaded a tarball, unpack it.
+
+    If you cloned a git repository, run bootstrap.  This requires
+    recent versions of Autoconf and Automake to be installed.  See
+    also doc/contributing.
+
+(2) Building a server
+
+    Prerequisites: IEEE Std 1003.1-2001 (POSIX.1-2001), GNU make, a
+    curses library, Perl, and either nroff or GNU troff (`groff').
+
+    See file `INSTALL' for detailed compilation and installation
+    instructions.  Quick guide for the impatient: run configure; make;
+    make install.  The last step is optional; everything runs fine
+    right from the build tree.
+
+    If configure reports "terminfo: no" in its configuration summary,
+    highlighting doesn't work in the client.  Commonly caused by not
+    having development libraries installed.  On Linux, try installing
+    ncurses-devel.
+
+    If make fails without doing anything, you're probably not using
+    GNU make.  Some systems have it installed as `gmake'.
+
+    Solaris supports POSIX.1-2001, but you need to set up your
+    environment for that.  Try passing
+        SHELL=/usr/xpg4/bin/sh PATH=/usr/xpg6/bin:/usr/xpg4/bin:$PATH
+    to make.  See standards(5) for details.
+
+(3) Creating a game
+
+    * Create a configuration for your game.  make install installs one
+      in $prefix/etc/empire/econfig ($prefix is /usr/local unless you
+      chose something else with configure).  You can use pconfig to
+      create another one.
+
+    * Edit your configuration file.  See doc/econfig for more
+      information.
+
+      Unless you put your configuration file in the default location
+      (where make install installs it), you have to use -e with all
+      programs to make them use your configuration.
+
+    * Run files to set up your data directory.
+
+    * Run fairland to create a world.  For a sample world, try
+      `fairland 10 30'.  This creates file ./newcap_script, which will
+      be used below.  You can edit it to change country names and
+      passwords.
+
+      Check out fairland's manual page for more information.
+
+    * Start the server.  For development, you want to run it with -d
+      in a debugger, see doc/debugging.  Do not use -d for a real
+      game!
+
+    * Log in as deity POGO with password peter.  This guide assumes
+      you use the included client `empire', but other clients should
+      work as well.
+
+      For help, try `info'.
+
+      To change the deity password, use `change re <password>'.
+
+    * Create countries with `exec newcap_script'.
+
+    Your game is now up!
+
+Naturally, there's more to running a real game than that, but that's
+beyond the scope of this file.
+
+Please report bugs to <wolfpack@wolfpackempire.com> or via SourceForge
+<http://sourceforge.net/projects/empserver/> (registration required).
+
+For more information or help, try rec.games.empire on Usenet, or send
+e-mail to <wolfpack@wolfpackempire.com> and we'll try to answer if we
+can.  Also check out our web site at <http://www.wolfpackempire.com/>.
+
+Have fun!
+
+Wolfpack!

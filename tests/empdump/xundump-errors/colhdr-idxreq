@@ -1,0 +1,3 @@
+config item
+uid name mnem value sell lbs pkg
+# header 'pkg' requires an index in field 7

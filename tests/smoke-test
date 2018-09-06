@@ -1,0 +1,21 @@
+#!/bin/sh -e
+# Smoke test for Empire
+
+if [ $# -ne 1 ]
+then echo "Usage: $0 SRCDIR" >&2; exit 1
+fi
+
+srcdir="$1"
+
+. "$srcdir"/tests/test-common.sh
+
+create_sandbox
+
+begin_test "$srcdir"/tests/smoke/fairland.xdump
+
+feed_input POGO peter "$srcdir"/tests/smoke/newcap_script
+feed_dir "$srcdir"/tests/smoke
+
+end_test
+
+cmp_logs_xdump

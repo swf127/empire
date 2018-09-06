@@ -1,0 +1,65 @@
+    Documentation is like sex: when it is good, it is very, very good;
+    and when it is bad, it is better than nothing.
+        --- Dick Brandon
+
+These files should be better than nothing:
+
+files
+	What's where.
+
+backups
+	Recommendations for how to do backups when running a game.
+
+clients-howto
+	Material useful for client writers.
+
+troubleshooting
+	Some common problems and solutions.
+
+configuration
+	How to turn options on and off, change game parameters, etc...
+
+debugging
+	Hints on debugging.
+
+econfig
+	Details about the syntax of data/econfig.
+
+bug-reports
+	What to do if you find a bug.
+
+threads
+	Dave Pare explains how lwp threads work.
+
+pthreads
+	Sasha Mikheev's notes on Empire's threading abstraction, and
+	its LWP and POSIX threads implementation.
+
+coding
+	Guidelines for writing Empire code
+
+contributing
+	How to contribute to Empire
+
+unicode
+	Design and implementation of Empire's Unicode support.
+
+CHANGES
+	Revision history for all the changes that were coded in the Empire2
+	project.  A much more readable version of this may be found in
+	"info History" (brief) or "info Empire2" (detailed).
+
+CHANGES2.3
+	All changes since revision 2.3
+
+CHANGES3.0
+	All changes since revision 3.0
+
+CHANGES4.X
+	All changes since revision 4.0
+
+WISH_LIST
+	things which maybe should be coded sometime.
+
+WACKY_IDEAS
+	things which shouldn't be coded except possibly as an option.

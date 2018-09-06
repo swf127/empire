@@ -1,0 +1,4 @@
+config ship-chr
+xxx
+# unknown header 'xxx' in field 1
+/config

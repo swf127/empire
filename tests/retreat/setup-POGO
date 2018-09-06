@@ -1,0 +1,238 @@
+|| create land
+desi @0,0:2 a
+desi 4,4 h
+des -6,2 h
+give c * ?des#. 100
+|| country#1
+add 1 1 1 p
+edit l * ?des#.&xloc>-6&xloc<0 o 1 O 1
+desi -2,0 c
+edit c 1 c -2,0 s 4 b 640 M 25000 T 100
+| two forts (-2,-2 with return fire, -2,2 without)
+desi -2,2 f
+desi -2,-2 f
+| harbor
+desi -3,1 h
+| ships for testing retreat command
+build s -3,1 lc 5
+edit s 4 L -5,1 U 7
+| fleet a defined below
+| ship to drop depth charges and board
+build s -3,1 dd
+edit s 5 g 1 s 40 m 60
+| ship to launch torpedoes
+build s -3,1 sb
+edit s 6 T 165 L -1,3 g 1 s 36
+| complete the ships
+edit s * ?own#0 E 100 M 127
+edit s * ?own#0&mil=0 m 10
+| p-bombers with 50% hit chance vs. dd in port
+build p -2,2 lb 5
+| marine missiles acc 50
+edit p 0 U 10 T mi t 160 U 11 U 12 U 13 U 14
+| p-bombers with 50% hit chance vs. cav
+edit p 0 U 20 t 400 U 21 U 22 U 23 U 24
+| very accurate p-bombers
+edit p 0 U 30 T ac t 400 U 31
+| complete the planes
+edit p * ?own#0 e 100 m 127
+| land units for testing retreat command
+build l -3,1 inf 5
+edit u 4 L -4,0 U 7
+| army a defined below
+| complete the land units
+edit u * ?own#0 e 100 M 127 m 10
+|| country#2
+add 2 2 2 p
+edit l * ?des#.&own=0 o 2 O 2
+| mountain, to test "can't retreat into mountain"
+desi 2,0 ^
+edit c 2 c 2,0 s 4 b 640 M 25000 T 100
+| a city for testing canals
+desi 4,0 c
+| harbors, 0,2 efficient, 2,2 construction zone
+desi 0:2,2 h
+edit l 2,2 e 1
+| a bit of rail
+desi 0,-2 +
+| ship that can return fire to -2,-2 and -5,-1 weakly
+edit s 5 U 9 O 2 L -4,-2 E 60
+| a train to carry land units
+edit u 0 U 9 O 2 T tra L 0,2
+| target ships gun fire: injured, helpless, not helpless
+edit s 0 U 20 O 2 U 10 L 0,2 U 11
+retr 10 nhhnj ih
+retr 11 n h
+retr 20 u h
+| crazy group retreat
+edit s 10 U 25 L -4,2 U 26 U 27 U 28 U 29 L 5,3
+edit s 25 U 24 O 1
+fleet g 24/25/26/27/28/29
+retr g ggg i
+retr 26 bn i
+retr g ?uid=27 bn i
+retr g ?uid=28 ggg b
+retr g ?uid=29 ggg i
+| target ships that want to retreat, but can't:
+| sunk
+edit s 10 U 30 E 20
+| in canal
+edit s 10 U 31 L 4,0
+| crewless
+edit s 10 U 32 m 0
+| in construction zone
+edit s 10 U 33 L 2,2
+| landlocked in 3,1
+edit s 10 U 34 L 3,1
+| no mobility
+edit s 10 U 35 M 0
+| on sale
+edit s 10 U 36
+| set as POGO doesn't work, done in setup-2
+fleet c 30/32/35/36
+retr c n i
+retr 31/33/34 n i
+| target ships having difficulties during retreat:
+edit s 10 U 40 U 41 U 42
+| runs out of mobility
+edit s 40 M 5
+retr 40 nnnnh i
+| into construction zone 2,2
+retr 41 nuh i
+| into unfriendly -3,1
+edit s 42 L -4,2
+retr 42 ugggh i
+| as group into minefield -6,4
+edit s 10 U 43 t ms U 44
+fleet m 43/44
+edit s m L -4,4
+edit l -6,4 M 100
+retr m gg i
+| into canal 4,0
+edit s 10 U 46 L 5,1 U 47 t pt
+fleet n 46/47
+retr n y i
+| missions for retreat to clear
+| (not all ships can perform missions)
+miss s * ?own=2&uid#9 int .
+| target ships depth-charges: injured vs. depth-charged, depth-charged,
+| helpless, not helpless
+edit s 10 U 50 t sb L -5,1 U 51 U 52 U 53 L -4,-2
+retr 50 gg dih
+retr 51 gg dh
+retr 52/53 gg h
+| target ships bombs: injured vs. bombed, bombed
+| five of each, to have a decent chance at getting both a hit and a miss
+edit s 10 U 60 t dd L -6,2 U 61 U 62 U 63 U 64 U 65 U 66 U 67 U 68 U 69
+retr 60/61/62/63/64 nn bih
+retr 65/66/67/68/69 nn bh
+| target ships missiles: injured (bombed doesn't apply)
+| five, to have a decent chance at getting both a hit and a miss
+edit s 60 U 80 L -6,2 U 81 U 82 U 83 U 84
+retr 80/81/82/83/84 nn bih
+| target ships torpedoes: torpedoed (injured not implemented)
+| five, to have a decent chance at getting both a hit and a miss
+edit s 10 U 100 L 0,4 U 101 U 102 U 103 U 104
+retr 100/101/102/103/104 nn tih
+| target ship sonar
+edit s 50 U 120
+retr 120 gg s
+| target ship boarding
+edit s 50 U 130 t tt
+retr 130 gg u
+edit s 130 U 131 U 132 E 20 m 80
+fleet u 131/132
+retr u gg u
+| target land units bombs: bombed
+edit u 9 U 10 T cav L 1,1
+lret 10 jhhuy b
+| crazy group retreat
+edit u 10 U 25 L 3,1 a g U 26 U 27 U 28 U 29 L 4,0
+edit u 25 U 24 O 1
+army g 24/25/26/27/28/29
+lret g bhg b
+lret 26 uh b
+lret g ?uid=27 uh b
+lret g ?uid=28 bhg i
+lret g ?uid=29 bhg b
+| target land units that want to retreat, but can't:
+| destroyed
+edit u 10 U 30 L 0,2 e 10
+| loaded on ship
+edit u 10 U 31 L 0,2 S 35
+| crewless
+edit u 10 U 32 L 0,2 m 0
+| kidnapped
+edit u 10 U 33 L -1,1
+| loaded on train
+edit u 10 U 34 L 0,2 Y 9
+| no mobility
+edit u 10 U 35 L 0,2 M 0
+| on sale
+edit u 10 U 36 L 0,2
+| set as POGO doesn't work, done in setup-2
+| no rail in 1,1
+edit u 10 U 37 T tra
+army c 30/31/32/34/35/36
+lret c j b
+lret 33/37 j b
+| target land units having difficulties during retreat:
+| runs out of mobility
+edit u 10 U 40 M 5
+lret 40 nu b
+| into mountain 2,0
+edit u 10 U 41
+lret 41 jy b
+| into foreign sector -1,1
+edit u 10 U 42
+lret 42 g b
+| as group into minefield 0,0
+edit u 10 U 10 U 43 T eng U 44
+army m 43/44
+edit l 0,0 O 1 M 100
+lret m yu b
+| into 0,0 no rail
+edit u 10 U 45 T tra L 0,-2
+| non-train retreating with train
+edit u 10 U 46 L 0,-2
+army t 45/46
+lret t nb b
+| into foreign X,Y
+edit u 10 U 47 L 1,-1 U 48 T spy
+army s 47/48
+lret s gh b
+| missions and fortification for retreat to clear
+| (not all land units can perform missions)
+miss l * ?own=2 res .
+edit u * ?own=2 F 127
+| target land units bombs: injured vs. bombed
+| five, to have a decent chance at getting both a hit and a miss
+edit u 10 U 60 L 0,0 U 61 U 62 U 63 U 64
+lret 60/61/62/63/64 nj bih
+|| country#3, allied to #2
+add 3 3 3 p
+edit l 2:3,-2:-1 o 3 O 3
+|| country#4, friendly to #2
+add 4 4 4 p
+edit l 4,4 o 4 O 4
+|| finishing touches
+give m * ?des=f 5
+give g * ?des=f 2
+give s * ?des=f 100
+give p * ?des=f 100
+edit l * ?des#.&eff=0 e 100 m 127
+fleet a 0/1/3/4
+army a 0/1/3/4
+|| relations
+decl w 1 2
+decl w 2 1
+decl a 2 3
+decl f 2 4
+|| show initial state here to help maintainers
+map *
+cens * ?des#.
+ship *
+retr * q
+land *
+lret * q
+plane *

@@ -1,0 +1,4 @@
+config sect
+xloc yloc ...
+64 0
+# value for field 1 must be 0

@@ -1,0 +1,242 @@
+||| Commands
+|| retreat command
+| garbage path
+retr 0 garbage i
+__cmd added 0 -1 0
+| condition help, then junk conditions
+retr 1 g
+?
+junk
+| long path, all conditions
+retr 2/3 bgyujnbgyujnbgyujn itshbdu
+| clear retreat order
+retr 3 h
+| group retreat order
+retr a ?uid=4 b h
+fleet a 7
+__cmd added 1 0 0
+| show retreat orders
+retr
+0/1/2/3/4/7
+q
+|| lretreat command
+| garbage path
+lret 0 garbage i
+__cmd added 0 -1 0
+| condition help, then junk conditions
+lret 1 g
+?
+junk
+| long path, all conditions
+lret 2/3 yujnbgyujnbgyujnbg ihb
+| clear retreat order
+lret 3 h
+| group retreat order
+lret a ?uid=4 b h
+army a 7
+__cmd added 1 0 0
+| show retreat orders
+lret
+0/1/2/3/4/7
+q
+||| Ships
+|| ships failing to retreat
+| sunk
+| as group (fleet c): 30 sinks, 32 crewless, 35 no mobility, 36 on sale
+fire se -2,2 30
+__cmd added -2 -2 0
+| in canal 4,0
+fire se -2,2 31
+__cmd added 1 1 0
+| in construction zone 2,2
+fire se -2,2 33
+| landlocked in 3,1
+fire se -2,2 34
+__cmd added -1 -1 0
+| as group (fleet c): 30 sinks, 31 on sale, 32 crewless, 35 no mobility,
+|| ships having difficulties during retreat
+| out of mobility after n
+fire se -2,2 40
+| into construction zone 2,2 after n
+fire se -2,2 41
+| into unfriendly -3,1 right away
+fire se -2,2 42
+| into minefield -6,4, sweep and hit mines, stop
+| as group (fleet m): 44/43
+fire se -2,2 44
+| into canal
+| as group (fleet n): 46 can't, 47 can
+fire se -2,2 46
+__cmd added 1 1 0
+|| ships retreating fully
+| nh
+fire se -2,2 10
+| h
+fire se -2,2 10
+| nj into friendly harbor 4,4
+fire se -2,2 10
+|| own ship stays put
+fire se -2,2 2
+|| ships retreating from gun fire
+| injured covered above
+| helpless
+fire se -2,2 11
+| not helpless
+fire se -2,-2 20
+| crazy group retreat
+| as group (fleet g): 25 unremarkable, 24 foreign, 26 group retreat off,
+| 27 different path, 28 different triggers, 29 is elsewhere
+fire se -2,2 25
+| odd: 26/27/28/29 retreat
+__cmd added 1 1 0
+|| ships retreating from depth charges
+| depth-charged
+fire sh 5 50
+fire sh 5 51
+| helpless
+fire sh 5 52
+| not helpless
+navi 5 gyuh
+fire sh 5 53
+|| ships retreating from bombs
+| injured
+bomb 0/1/2/3/4 . p -2,2 ggh
+s
+60
+61
+62
+63
+64
+| bombed
+bomb 0/1/2/3/4 . p -2,2 ggh
+s
+65
+66
+67
+68
+69
+| helpless is not implemented
+|| ships retreating from missiles
+| injured
+launch 10 80
+launch 11 81
+launch 12 82
+launch 13 83
+launch 14 84
+| bombed and helpless doesn't apply to missiles (I guess they should)
+|| ships retreating from torpedoes
+| torpedoed
+torp 6 100
+torp 6 101
+torp 6 102
+torp 6 103
+torp 6 104
+| BUG: retreats only when hit
+| injured is not implemented
+| helpless is not implemented
+|| ships retreating from sonar pings
+| naval sonar, 120 detects
+navi 5 bsh
+| retreat on plane sonar is not implemented
+|| ships retreating from unsuccessful boarding
+navi 5 nh
+board 130 5
+1
+| as group (fleet u): 132 sinks, 131 unremarkable
+board 132 5
+50
+__cmd added 1 4 0
+||| Land units
+| BUG: condition b triggers only on hit
+|| land units failing to retreat
+| these bombing runs must hit; if they don't, use __cmd to make them
+| destroyed
+| as group (army c): 30 dies, 31 loaded on ship, 32 crewless,
+| 34 loaded on train, 35 no mobility, 36 on sale
+bomb 30 . p -2,2 jh
+l
+30
+__cmd added -1 -2 0
+| kidnapped in -1,1
+bomb 30 . p -2,2 uh
+l
+33
+| BUG: retreats anyway
+| no rail in 1,1
+bomb 30 . p -2,2 ujh
+l
+37
+|| land units having difficulties during retreat
+| these bombing runs must hit; if they don't, use __cmd to make them
+| out of mobility after n
+bomb 30 . p -2,2 ujh
+l
+40
+| into mountain 2,0 after j
+| not actually having difficulties; such a retreat is permitted now
+__cmd added -1 0 0
+bomb 30 . p -2,2 ujh
+l
+41
+| into foreign -1,1 right away
+bomb 30 . p -2,2 ujh
+l
+42
+| into minefield 0,0, sweep and hit mines, stop
+| as group (army m): 44/43
+__cmd added -1 0 0
+bomb 30 . p -2,2 ujh
+l
+44
+| rail ends after n
+| as group (army t): 45 train, 46 not
+bomb 31 . p -2,2 uyuuh
+l
+45
+| into foreign, 47 can't, 48 can
+__cmd added -1 0 0
+bomb 31 . p -2,2 uuuh
+l
+47
+__cmd added 2 4 0
+|| land units retreating fully
+| jh
+__cmd added -1 0 0
+bomb 30 . p -2,2 ujh
+l
+10
+| h
+__cmd added -1 0 0
+bomb 30 . p -2,2 ujjh
+l
+10
+| uy into allied 3,-1
+__cmd added -1 0 0
+bomb 30 . p -2,2 ujjh
+l
+10
+| own land unit stays put
+bomb 30 . p -3,1 h
+l
+2
+| crazy group retreat
+| as group (army g): 25 unremarkable, 24 foreign, 26 group retreat off,
+| 27 different path, 28 different triggers, 29 is elsewhere
+bomb 30 . p -2,2 ujjh
+l
+25
+| odd: 26/27/28/29 retreat
+__cmd added 1 2 0
+|| land units retreating from bombs
+| only retreat on p-bombing is implemented
+| bombed covered above
+| injured
+bomb 20/21/22/23/24 . p -2,2 uuh
+l
+60
+61
+62
+63
+64
+| bombed covered above
+| helpless is not implemented

@@ -1,0 +1,15 @@
+The most recent player commands are kept in the global array
+player_commands[], which is indexed by player_commands_index.  Array
+elements are strings of the form:
+
+  "%3d %3d %s", index, player->cnum, command
+
+The server tries to log the most recent player commands when it
+crashes.  If you need better logs after a crash, consider enabling the
+journal log file.
+
+When the server detects a problem, it logs it and tries to recover.
+The code is being converted to call oops() for this purpose, commonly
+through CANT_HAPPEN().  When you run the server with -d, oops()
+crashes by calling abort() before the recovery.  This is what you want
+when you run it in a debugger.

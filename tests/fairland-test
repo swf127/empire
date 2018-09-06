@@ -1,0 +1,18 @@
+#!/bin/sh -e
+# Basic fairland test
+
+if [ $# -ne 1 ]
+then echo "Usage: $0 SRCDIR" >&2; exit 1
+fi
+
+srcdir="$1"
+
+. "$srcdir"/tests/test-common.sh
+
+create_sandbox
+
+$files -f >/dev/null
+run_and_cmp fairland $fairland -s sandbox/newcap_script -R 1 10 30
+
+$empdump -x >sandbox/final.xdump
+cmp_out final.xdump newcap_script

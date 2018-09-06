@@ -1,0 +1,31 @@
+config product
+uid sname ...
+  0 "iron"
+  1 "dust"
+  2 "food"
+  3 "oil"
+  4 "rad"
+  5 "shells"
+  6 "guns"
+  7 "petrol"
+  8 "bars"
+  9 "lcm"
+ 10 "hcm"
+ 11 "tech"
+ 12 "medical"
+ 13 "edu"
+ 14 "happy"
+/config
+
+config product
+name
+# header 'ctype(0)' ... 'ctype(2)' missing
+# header 'camt(0)' ... 'camt(2)' missing
+# header 'type' missing
+# header 'level' missing
+# header 'cost' missing
+# header 'nrndx' missing
+# header 'nrdep' missing
+# header 'nlndx' missing
+# header 'nlmin' missing
+# header 'nllag' missing

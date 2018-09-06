@@ -1,0 +1,4 @@
+config product
+uid name sname ct(0) ...
+0 "iron\040ore" "iron"
+# field 'ctype(0)' missing

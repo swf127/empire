@@ -1,0 +1,3 @@
+config sect
+uid ...
+# extraneous header 'uid' in field 1

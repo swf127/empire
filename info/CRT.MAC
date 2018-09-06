@@ -1,0 +1,32 @@
+.\" EMPIRE MACRO FILE FOR 24-LINE CRT
+.\" Normal Font
+.ds nF \\fR
+.\" Normal font name: must match value of nF!
+.ds N R
+.\" Example Font
+.ds eF \\fR
+.\" Example Font name (used with .cs requests): must match value of eF!
+.ds EF R
+.\" Bold Font
+.ds bF \\fR
+.\" Italic Font
+.ds iF \\fR
+.\" Previous Font
+.ds pF \\fP
+.\" Character spacing string
+.ds cS 26
+.\" Start out correctly
+.nr CS 0
+.\" Special strings for special characters, including smart quotes.
+.ds Q \&"
+.ds U \&"
+.pl 23v         \" Page length: 23 lines
+.ll 7.8i        \" Line length: 7.8 inches
+.ev 1
+.ll 7.8i        \" Line length: 7.8 inches
+.ev
+.ev 2
+.ll 7.8i        \" Line length: 7.8 inches
+.ev
+\" .so INFO.MAC \" Read in INFO.MAC macros
+\" except that's done by make now

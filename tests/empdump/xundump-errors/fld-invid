@@ -1,0 +1,4 @@
+config ship
+uid ...
+0.1
+# field 1 can't hold this value
